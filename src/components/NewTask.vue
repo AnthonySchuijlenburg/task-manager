@@ -21,10 +21,19 @@ function saveTask(task: Task) {
 </script>
 
 <template>
-  <AbstractCard v-if="isEditing">
-    <TaskForm @save="saveTask" @cancel="isEditing = false" />
-  </AbstractCard>
-  <button v-else class="btn btn--primary" @click="newTask">New task</button>
+  <div class="new-task-card">
+    <AbstractCard v-if="isEditing">
+      <TaskForm @save="saveTask" @cancel="isEditing = false" />
+    </AbstractCard>
+    <button v-else class="btn btn--primary" @click="newTask">New task</button>
+  </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped>
+.new-task-card {
+  max-width: 24rem;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+}
+</style>

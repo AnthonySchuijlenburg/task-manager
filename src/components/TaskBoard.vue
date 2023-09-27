@@ -34,6 +34,7 @@ const dividedTasks = computed(() => {
 .task-groups {
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
   grid-gap: 2rem;
 
   @media (min-width: 1024px) {

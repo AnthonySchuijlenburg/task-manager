@@ -47,7 +47,7 @@ function remove(task: Task) {
     <div v-else class="task">
       <div class="task__header">
         <h3 class="task__title">{{ task.name }}</h3>
-        <div>
+        <div class="task__icons">
           <Trash @click="remove(task)" />
           <Pencil @click="isEditing = true" />
         </div>
@@ -76,15 +76,20 @@ function remove(task: Task) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  .lucide {
-    cursor: pointer;
-    margin: 0 0.2rem;
-  }
 }
 
 .task__title {
   font-size: 1.5rem;
+}
+
+.task__icons {
+  display: flex;
+  align-items: center;
+  .lucide {
+    cursor: pointer;
+    margin: 0 0.2rem;
+    display: flex;
+  }
 }
 
 .task__entry {
