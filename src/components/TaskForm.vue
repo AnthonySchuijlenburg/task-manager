@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import type { Task } from '@/types/Task'
-import { ref } from 'vue'
 import { TaskStatus } from '@/enums/TaskStatus'
+import cloneDeep from 'lodash.clonedeep'
 
 const props = defineProps({
   task: {
@@ -19,9 +19,15 @@ const emptyTask: Task = {
   status: TaskStatus.Todo
 }
 
-const editableTask = ref<Task>(props.task ?? emptyTask)
+const editableTask: Task = cloneDeep(props.task) ?? emptyTask
+function dateToYYYYMMDD(date: Date) {
+  // alternative implementations in https://stackoverflow.com/q/23593052/1850609
+  return (
+    date &&
+    new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split('T')[0]
+  )
+}
 
-const statusKeys: Array<string> = Object.keys(TaskStatus)
 const statusValues: Array<string> = Object.values(TaskStatus)
 </script>
 
@@ -48,21 +54,22 @@ const statusValues: Array<string> = Object.values(TaskStatus)
 
     <label class="task-form__label" for="dueDate">Due date *</label>
     <input
-      id="dueDate"
-      v-model="editableTask.dueDate"
-      type="date"
-      required
       class="task-form__input"
+      id="dueDate"
+      type="date"
+      :value="dateToYYYYMMDD(editableTask.dueDate)"
+      @input="editableTask.dueDate = ($event?.target as HTMLInputElement).valueAsDate ?? new Date()"
     />
 
     <label class="task-form__label" for="dueDate">Due date *</label>
     <select id="dueDate" v-model="editableTask.status" required class="task-form__input">
-      <option v-for="(_, index) in statusKeys" :key="index" :value="statusValues[index]">
-        {{ statusValues[index] }}
+      <option v-for="value in statusValues" :key="value" :value="value">
+        {{ value }}
       </option>
     </select>
 
     <button class="btn btn--primary" type="submit">Save task</button>
+    <button class="btn btn--primary" type="button" @click="$emit('cancel')">Cancel</button>
   </form>
 </template>
 

@@ -7,6 +7,10 @@ defineProps({
   tasks: {
     required: true,
     type: Array<Task>
+  },
+  status: {
+    required: true,
+    type: String
   }
 })
 </script>
@@ -14,7 +18,7 @@ defineProps({
 <template>
   <div class="task-group">
     <AbstractCard>
-      <h2 class="task-group__title">{{ tasks[0].status }}</h2>
+      <h2 class="task-group__title">{{ status }}</h2>
       <TaskCard v-for="task in tasks" :task="task" :key="task.id" />
     </AbstractCard>
   </div>

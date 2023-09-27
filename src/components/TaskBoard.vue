@@ -1,50 +1,32 @@
 <script setup lang="ts">
 import TaskGroup from '@/components/TaskGroup.vue'
 import { useTasksStore } from '@/stores/tasks'
-import { computed, onBeforeMount } from 'vue'
+import { computed } from 'vue'
 import { TaskStatus } from '@/enums/TaskStatus'
 import type { Task } from '@/types/Task'
 
 const tasks = useTasksStore()
+const statuses: Array<string> = Object.values(TaskStatus)
 
 const dividedTasks = computed(() => {
-  let dividedTasks: Array<Array<Task>> = []
+  let dividedTasks: { [key: string]: Array<Task> } = {}
 
-  Object.values(TaskStatus).forEach((key: string): void => {
-    dividedTasks.push(tasks.tasks.filter((task: Task) => task.status === key))
+  statuses.forEach((key: string): void => {
+    dividedTasks[key] = tasks.tasks.filter((task: Task) => task.status === key)
   })
 
   return dividedTasks
-})
-
-onBeforeMount(() => {
-  tasks.addTask({
-    id: tasks.latestTaskId + 1,
-    name: 'Simple task',
-    description: 'A simple description about the task.',
-    dueDate: new Date(),
-    status: TaskStatus.Todo
-  })
-  tasks.addTask({
-    id: tasks.latestTaskId + 1,
-    name: 'Simple task2',
-    description: 'A simple description about the task.',
-    dueDate: new Date(),
-    status: TaskStatus.InProgress
-  })
-  tasks.addTask({
-    id: tasks.latestTaskId + 1,
-    name: 'Simple task3',
-    description: 'A simple description about the task.',
-    dueDate: new Date(),
-    status: TaskStatus.Done
-  })
 })
 </script>
 
 <template>
   <div class="task-groups">
-    <TaskGroup v-for="(tasks, index) in dividedTasks" :key="index" :tasks="tasks" />
+    <TaskGroup
+      v-for="(status, index) in statuses"
+      :key="index"
+      :tasks="dividedTasks[status]"
+      :status="status"
+    />
   </div>
 </template>
 
