@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import {useTasksStore} from "@/stores/tasks";
-import {computed, onBeforeMount} from "vue";
-import {TaskStatus} from "@/enums/TaskStatus";
-import type { Task } from "@/types/Task";
-import TaskGroup from "@/components/TaskGroup.vue";
+import { useTasksStore } from '@/stores/tasks'
+import { computed, onBeforeMount } from 'vue'
+import { TaskStatus } from '@/enums/TaskStatus'
+import type { Task } from '@/types/Task'
+import TaskGroup from '@/components/TaskGroup.vue'
+import NewTask from '@/components/NewTask.vue'
 
-const tasks = useTasksStore();
+const tasks = useTasksStore()
 
 const dividedTasks = computed(() => {
-  let dividedTasks: Array<Array<Task>> = [];
+  let dividedTasks: Array<Array<Task>> = []
 
   Object.values(TaskStatus).forEach((key: string): void => {
-    dividedTasks.push(tasks.tasks.filter((task: Task) => task.status === key));
-  });
+    dividedTasks.push(tasks.tasks.filter((task: Task) => task.status === key))
+  })
 
-  return dividedTasks;
-});
+  return dividedTasks
+})
 
 onBeforeMount(() => {
   tasks.addTask({
@@ -23,36 +24,41 @@ onBeforeMount(() => {
     name: 'Simple task',
     description: 'A simple description about the task.',
     dueDate: new Date(),
-    status: TaskStatus.Todo,
-  });
+    status: TaskStatus.Todo
+  })
   tasks.addTask({
     id: tasks.latestTaskId + 1,
     name: 'Simple task2',
     description: 'A simple description about the task.',
     dueDate: new Date(),
-    status: TaskStatus.InProgress,
-  });
+    status: TaskStatus.InProgress
+  })
   tasks.addTask({
     id: tasks.latestTaskId + 1,
     name: 'Simple task3',
     description: 'A simple description about the task.',
     dueDate: new Date(),
-    status: TaskStatus.Done,
-  });
+    status: TaskStatus.Done
+  })
 })
 </script>
 
 <template>
+  <div class="new-task">
+    <NewTask />
+  </div>
   <div class="task-groups">
-    <TaskGroup
-        v-for="(tasks, index) in dividedTasks"
-        :key="index"
-        :tasks="tasks"
-    />
+    <TaskGroup v-for="(tasks, index) in dividedTasks" :key="index" :tasks="tasks" />
   </div>
 </template>
 
 <style lang="scss" scoped>
+.new-task {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
 .task-groups {
   display: grid;
   grid-template-columns: 1fr;
@@ -62,5 +68,4 @@ onBeforeMount(() => {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
 </style>

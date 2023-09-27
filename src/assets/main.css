@@ -17,3 +17,19 @@
     max-width: 80rem;
   }
 }
+
+.btn {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 0.5rem;
+  outline: 1px solid rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.8);
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.btn--secondary {
+  background-color: transparent;
+  border-radius: 0;
+  outline: none;
+}
